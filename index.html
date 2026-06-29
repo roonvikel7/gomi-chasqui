@@ -55,6 +55,12 @@
         <!-- Canvas -->
         <canvas id="gameCanvas"></canvas>
 
+        <!-- Mobile Touch Controls -->
+        <div id="mobile-controls" class="mobile-controls">
+            <div id="btn-duck" class="mobile-btn"><span>↓</span> AGACHARSE</div>
+            <div id="btn-jump" class="mobile-btn"><span>↑</span> SALTAR</div>
+        </div>
+
         <!-- Start Screen -->
         <div id="start-screen" class="overlay">
             <div class="start-content">
@@ -77,7 +83,8 @@
                         <span class="key-desc">Agacharse</span>
                     </div>
                 </div>
-                <p class="start-prompt pulse">⎵ Presiona ESPACIO para comenzar ⎵</p>
+                <p class="start-prompt pulse desktop-only">⎵ Presiona ESPACIO para comenzar ⎵</p>
+                <p class="start-prompt pulse mobile-only">Toca SALTAR para comenzar</p>
             </div>
         </div>
 
@@ -161,6 +168,15 @@
                     <span id="victory-record">Distancia: 0 m</span>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Landscape Orientation Prompt -->
+    <div id="landscape-prompt">
+        <div class="landscape-content">
+            <div class="rotate-icon">📱🔄</div>
+            <h2>¡Gira tu celular!</h2>
+            <p>Para una mejor experiencia y poder ver los obstáculos a tiempo, por favor gira tu dispositivo horizontalmente.</p>
         </div>
     </div>
 

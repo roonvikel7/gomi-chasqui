@@ -984,13 +984,35 @@ class Game {
             }
         });
 
-        // Touch support
+        // Touch support (General canvas touch)
         this.canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             if (this.state === 'menu') this.startGame();
-            else if (this.state === 'playing') this.jump();
             else if (this.state === 'gameover') this.restart();
+            // During playing, we expect the user to use the specific on-screen buttons
         });
+
+        // Mobile specific buttons
+        const btnJump = document.getElementById('btn-jump');
+        const btnDuck = document.getElementById('btn-duck');
+        
+        if (btnJump && btnDuck) {
+            btnJump.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (this.state === 'playing') this.jump();
+                else if (this.state === 'menu') this.startGame();
+                else if (this.state === 'gameover') this.restart();
+            });
+            
+            btnDuck.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (this.state === 'playing') this.duck(true);
+            });
+            btnDuck.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.duck(false);
+            });
+        }
     }
 
     startGame() {
@@ -1000,6 +1022,16 @@ class Game {
         this.hud.classList.add('visible');
         this.gameoverScreen.classList.add('hidden');
         this.quizScreen.classList.add('hidden');
+        
+        // Attempt to lock orientation to landscape (mobile only)
+        try {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(err => console.log('Orientation lock failed:', err));
+            }
+        } catch (e) {
+            console.log('Orientation API not supported');
+        }
+
         this.reset();
     }
 
