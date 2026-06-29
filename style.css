@@ -875,3 +875,58 @@ body {
         display: flex;
     }
 }
+
+/* Compact UI for short screens (landscape mobile) */
+@media (max-height: 550px) {
+    .quiz-modal, .victory-modal, .gameover-modal {
+        padding: 12px 20px;
+    }
+    .quiz-header {
+        margin-bottom: 8px;
+    }
+    .quiz-title {
+        font-size: 18px;
+    }
+    .quiz-question {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+    .quiz-option-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    .quiz-options {
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+    #quiz-fact-text {
+        font-size: 14px !important;
+        margin-bottom: 12px !important;
+        padding: 12px !important;
+    }
+    #quiz-countdown-container {
+        padding: 8px !important;
+        font-size: 16px !important;
+    }
+    #quiz-countdown-timer {
+        font-size: 20px !important;
+    }
+    .gameover-title {
+        font-size: 28px;
+    }
+    .gameover-stats {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .stat-value {
+        font-size: 18px;
+    }
+    .fact-box {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    .victory-image-container {
+        height: 150px;
+        margin-bottom: 15px;
+    }
+}
