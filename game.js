@@ -1381,9 +1381,11 @@ class Game {
             frame: Math.random() * 100,
         };
         
-        // Remove any quipus that are too close to this new obstacle
+        // If a quipu is too close, abort spawning this obstacle to let the player collect it safely
         const safeZone = { x: newObs.x - 100, y: 0, w: newObs.w + 200, h: CFG.H };
-        this.quipus = this.quipus.filter(q => !this.checkCollision(q, safeZone));
+        if (this.quipus.some(q => this.checkCollision(q, safeZone))) {
+            return; 
+        }
 
         this.obstacles.push(newObs);
     }
@@ -1396,7 +1398,7 @@ class Game {
         
         let isGarment = false;
         let garmentType = null;
-        if (this.nextGarmentIndex < 6 && this.quipusCollected >= (this.nextGarmentIndex + 1) * 10) {
+        if (this.nextGarmentIndex < 6 && this.quipusCollected >= (this.nextGarmentIndex + 1) * 6) {
             // Check if this garment is already spawned and on screen
             const alreadySpawned = this.quipus.some(q => q.isGarment && q.garmentIndex === this.nextGarmentIndex);
             if (!alreadySpawned) {
