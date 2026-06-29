@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gomi-Chasqui: Un juego endless runner educativo sobre los mensajeros incas y el Qhapaq Ñan, la red vial del Tahuantinsuyo.">
+    <meta name="keywords" content="Chasqui, Inca, Qhapaq Ñan, juego, endless runner, educativo, Tahuantinsuyo, Quipu">
+    <title>Gomi-Chasqui: La Ruta del Qhapaq Ñan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-wrapper">
+        <!-- HUD Overlay -->
+        <div id="hud">
+            <div id="hud-left">
+                <div class="hud-item" id="hud-score">
+                    <span class="hud-label">PUNTAJE</span>
+                    <span class="hud-value" id="score-value">0</span>
+                </div>
+                <div class="hud-item" id="hud-distance">
+                    <span class="hud-label">DISTANCIA</span>
+                    <span class="hud-value" id="distance-value">0 m</span>
+                </div>
+            </div>
+            <div id="hud-right">
+                <div class="hud-item" id="hud-quipus">
+                    <span class="hud-icon">🪢</span>
+                    <span class="hud-value" id="quipu-value">0</span>
+                </div>
+                <div class="hud-item" id="hud-speed">
+                    <span class="hud-label">VEL</span>
+                    <span class="hud-value" id="speed-value">1x</span>
+                </div>
+            </div>
+            <!-- Central Inventory HUD -->
+            <div id="hud-inventory" class="hud-inventory">
+                <div class="inv-slot" id="inv-slot-0"><img src="assets/uncu.webp" alt="Uncu" class="inv-icon"></div>
+                <div class="inv-slot" id="inv-slot-1"><img src="assets/pututu.webp" alt="Pututu" class="inv-icon"></div>
+                <div class="inv-slot" id="inv-slot-2"><img src="assets/chuspa.webp" alt="Chuspa" class="inv-icon"></div>
+                <div class="inv-slot" id="inv-slot-3"><img src="assets/qepi.webp" alt="Q'epi" class="inv-icon"></div>
+                <div class="inv-slot" id="inv-slot-4"><img src="assets/ullu.webp" alt="Ullu" class="inv-icon"></div>
+                <div class="inv-slot" id="inv-slot-5"><img src="assets/usutas.webp" alt="Usutas" class="inv-icon"></div>
+            </div>
+        </div>
+
+        <!-- Toast Notification for Items -->
+        <div id="item-toast" class="item-toast hidden">
+            <span id="item-toast-icon" class="item-toast-icon"></span>
+            <span id="item-toast-text" class="item-toast-text"></span>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="overlay">
+            <div class="start-content">
+                <div class="title-group">
+                    <h1 class="game-title">GOMI-CHASQUI</h1>
+                    <h2 class="game-subtitle">La Ruta del Qhapaq Ñan</h2>
+                </div>
+                <div class="start-divider"></div>
+                <p class="start-description">
+                    Corre por los caminos del Tahuantinsuyo como un valiente Chasqui de gomita.<br>
+                    ¡Recoge los Quipus y lleva el mensaje!
+                </p>
+                <div class="controls-info">
+                    <div class="control-key">
+                        <span class="key">ESPACIO</span>
+                        <span class="key-desc">Saltar</span>
+                    </div>
+                    <div class="control-key">
+                        <span class="key">↓</span>
+                        <span class="key-desc">Agacharse</span>
+                    </div>
+                </div>
+                <p class="start-prompt pulse">⎵ Presiona ESPACIO para comenzar ⎵</p>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div id="gameover-screen" class="overlay hidden">
+            <div class="gameover-modal">
+                <div class="gameover-header">
+                    <h2 class="gameover-title">¡Fin del Camino!</h2>
+                    <div class="gameover-decoration"></div>
+                </div>
+                <div class="gameover-stats">
+                    <div class="stat">
+                        <span class="stat-label">Puntaje</span>
+                        <span class="stat-value" id="final-score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Distancia</span>
+                        <span class="stat-value" id="final-distance">0 m</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Quipus</span>
+                        <span class="stat-value" id="final-quipus">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Récord</span>
+                        <span class="stat-value" id="high-score">0</span>
+                    </div>
+                </div>
+                <div class="fact-box">
+                    <div class="fact-header">
+                        <span class="fact-icon">📜</span>
+                        <span class="fact-title">Dato Histórico</span>
+                    </div>
+                    <p class="fact-text" id="fact-text"></p>
+                </div>
+                <p class="restart-prompt pulse">⎵ Presiona ESPACIO para reintentar ⎵</p>
+            </div>
+        </div>
+
+        <!-- Quiz Flashcard Modal -->
+        <div id="quiz-screen" class="overlay hidden">
+            <div class="quiz-modal">
+                <div class="quiz-header">
+                    <div class="quiz-lives-display">
+                        <span class="quiz-lives-icon">❤️</span>
+                        <span class="quiz-lives-text" id="quiz-lives-text">Vidas extra: 3</span>
+                    </div>
+                    <h2 class="quiz-title" id="quiz-title">📜 Dato Histórico</h2>
+                    <div class="quiz-decoration"></div>
+                </div>
+                
+                <div id="quiz-step-fact">
+                    <p id="quiz-fact-text" style="font-size: 16px; line-height: 1.6; margin-bottom: 24px; color: #fff; text-align: left; background: rgba(255,255,255,0.05); padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);"></p>
+                    <div id="quiz-countdown-container" style="text-align: center; font-family: var(--font-display); font-size: 18px; font-weight: bold; color: var(--gold); background: rgba(255, 215, 0, 0.1); padding: 12px; border-radius: 10px; border: 1px dashed rgba(255, 215, 0, 0.3);">
+                        Memoriza esto... <span id="quiz-countdown-timer" style="font-size: 26px; margin-left: 8px;">8</span>
+                    </div>
+                </div>
+
+                <div id="quiz-step-question" class="hidden">
+                    <p class="quiz-question" id="quiz-question"></p>
+                    <div class="quiz-options" id="quiz-options"></div>
+                    <div class="quiz-feedback hidden" id="quiz-feedback">
+                        <span class="quiz-feedback-icon" id="quiz-feedback-icon"></span>
+                        <span class="quiz-feedback-text" id="quiz-feedback-text"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Victory Modal -->
+        <div id="victory-screen" class="overlay hidden">
+            <div class="victory-modal">
+                <h2 class="victory-title pulse">¡Misión Cumplida!</h2>
+                <h3 class="victory-subtitle">Has vestido al Chasqui</h3>
+                <div class="victory-image-container">
+                    <img src="assets/chasqui_completo.webp" alt="Chasqui Completo" class="victory-image">
+                </div>
+                <p class="victory-instruction">Toma una captura de pantalla a este mensaje y preséntalo para reclamar tu Frasco de Gomitas GRATIS.</p>
+                <div class="victory-stamp">
+                    <span id="victory-timestamp">Fecha y Hora</span>
+                    <span id="victory-record">Distancia: 0 m</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
