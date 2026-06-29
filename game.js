@@ -1398,7 +1398,8 @@ class Game {
         
         let isGarment = false;
         let garmentType = null;
-        if (this.nextGarmentIndex < 6 && this.quipusCollected >= (this.nextGarmentIndex + 1) * 6) {
+        // TEST MODE: 1 quipu per garment
+        if (this.nextGarmentIndex < 6 && this.quipusCollected >= (this.nextGarmentIndex + 1) * 1) {
             // Check if this garment is already spawned and on screen
             const alreadySpawned = this.quipus.some(q => q.isGarment && q.garmentIndex === this.nextGarmentIndex);
             if (!alreadySpawned) {
