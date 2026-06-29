@@ -914,6 +914,13 @@ body {
     .gameover-title {
         font-size: 28px;
     }
+    .game-title {
+        font-size: 32px;
+        white-space: nowrap;
+    }
+    .start-content {
+        padding: 15px 30px;
+    }
     .gameover-stats {
         gap: 10px;
         margin-bottom: 15px;
