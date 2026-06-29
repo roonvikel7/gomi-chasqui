@@ -776,7 +776,7 @@ body {
     left: 10px;
     right: 10px;
     justify-content: space-between;
-    z-index: 20;
+    z-index: 100;
     pointer-events: none; /* Let touches pass through the container */
 }
 

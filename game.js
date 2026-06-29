@@ -984,12 +984,21 @@ class Game {
             }
         });
 
-        // Touch support (General canvas touch)
+        // Touch support (General canvas touch for safety)
         this.canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             if (this.state === 'menu') this.startGame();
             else if (this.state === 'gameover') this.restart();
-            // During playing, we expect the user to use the specific on-screen buttons
+        });
+
+        // Touch support for overlays directly
+        document.getElementById('start-screen').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (this.state === 'menu') this.startGame();
+        });
+        document.getElementById('gameover-screen').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (this.state === 'gameover') this.restart();
         });
 
         // Mobile specific buttons
