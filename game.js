@@ -1085,6 +1085,7 @@ class Game {
         this.particles = [];
         this.nextObstacle = 1200;
         this.nextQuipu = 1800;
+        this.quipuTimer = Math.floor(Math.random() * 90) + 90; // Initialize proper timer
         this.deltaAccum = 0;
         this.shake = { x: 0, y: 0, intensity: 0 };
         this.extraLives = 3;
@@ -1381,7 +1382,7 @@ class Game {
         };
         
         // Remove any quipus that are too close to this new obstacle
-        const safeZone = { x: newObs.x - 200, y: 0, w: newObs.w + 400, h: CFG.H };
+        const safeZone = { x: newObs.x - 100, y: 0, w: newObs.w + 200, h: CFG.H };
         this.quipus = this.quipus.filter(q => !this.checkCollision(q, safeZone));
 
         this.obstacles.push(newObs);
@@ -1416,8 +1417,8 @@ class Game {
 
         // Prevent spawning directly inside or too close to an obstacle
         for (const obs of this.obstacles) {
-            // Guarantee 200px horizontal clearance so they never overlap
-            const safeZone = { x: obs.x - 200, y: 0, w: obs.w + 400, h: CFG.H };
+            // Guarantee 100px horizontal clearance so they never overlap
+            const safeZone = { x: obs.x - 100, y: 0, w: obs.w + 200, h: CFG.H };
             if (this.checkCollision(newQuipu, safeZone)) {
                 return; // Abort spawn
             }
@@ -1540,9 +1541,13 @@ class Game {
             this.deltaAccum = 0;
         }
 
-        // Spawn quipus (separate timer using frame count)
-        if (this.frame % Math.floor(rand(90, 180)) === 0 && this.quipus.length < 3) {
-            this.spawnQuipu();
+        // Spawn quipus (using proper timer)
+        this.quipuTimer--;
+        if (this.quipuTimer <= 0) {
+            if (this.quipus.length < 3) {
+                this.spawnQuipu();
+            }
+            this.quipuTimer = Math.floor(Math.random() * 90) + 90; // Next spawn in 90-180 frames
         }
 
         // Move obstacles
