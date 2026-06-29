@@ -30,7 +30,8 @@ body {
         radial-gradient(ellipse at 20% 50%, rgba(192, 57, 43, 0.08) 0%, transparent 60%),
         radial-gradient(ellipse at 80% 20%, rgba(45, 27, 78, 0.15) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 100%, rgba(230, 126, 34, 0.06) 0%, transparent 40%);
-    min-height: 100vh;
+    min-height: 100vh; /* fallback */
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,7 +44,7 @@ body {
 /* Game Container */
 #game-wrapper {
     position: relative;
-    width: min(900px, 96vw, calc(96vh * (900 / 500)));
+    width: min(900px, 96vw, calc(96dvh * (900 / 500)));
     aspect-ratio: 900 / 500;
     border-radius: 16px;
     overflow: hidden;
@@ -771,10 +772,10 @@ body {
 /* Mobile Touch Controls */
 .mobile-controls {
     display: none;
-    position: absolute;
+    position: fixed; /* Fixed relative to screen, not wrapper */
     bottom: 20px;
-    left: 10px;
-    right: 10px;
+    left: 20px;
+    right: 20px;
     justify-content: space-between;
     z-index: 100;
     pointer-events: none; /* Let touches pass through the container */
