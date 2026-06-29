@@ -1372,13 +1372,19 @@ class Game {
             y = CFG.GROUND_Y - 65; 
         }
         
-        this.obstacles.push({
+        const newObs = {
             type,
             alpacaVariant,
             x: CFG.W + 20,
             y, w, h,
             frame: Math.random() * 100,
-        });
+        };
+        
+        // Remove any quipus that are too close to this new obstacle
+        const safeZone = { x: newObs.x - 200, y: 0, w: newObs.w + 400, h: CFG.H };
+        this.quipus = this.quipus.filter(q => !this.checkCollision(q, safeZone));
+
+        this.obstacles.push(newObs);
     }
 
     spawnQuipu() {
@@ -1410,9 +1416,9 @@ class Game {
 
         // Prevent spawning directly inside or too close to an obstacle
         for (const obs of this.obstacles) {
-            // Expand the collision box slightly to give some breathing room
-            const expandedObs = { ...obs, x: obs.x - 30, w: obs.w + 60, y: obs.y - 30, h: obs.h + 60 };
-            if (this.checkCollision(newQuipu, expandedObs)) {
+            // Guarantee 200px horizontal clearance so they never overlap
+            const safeZone = { x: obs.x - 200, y: 0, w: obs.w + 400, h: CFG.H };
+            if (this.checkCollision(newQuipu, safeZone)) {
                 return; // Abort spawn
             }
         }
