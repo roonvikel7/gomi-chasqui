@@ -1024,13 +1024,28 @@ class Game {
         }
     }
 
+    requestFullscreen() {
+        try {
+            const docEl = document.documentElement;
+            if (docEl.requestFullscreen) {
+                docEl.requestFullscreen().catch(err => console.log(err));
+            } else if (docEl.webkitRequestFullscreen) {
+                docEl.webkitRequestFullscreen();
+            }
+        } catch (e) {
+            console.log('Fullscreen API error', e);
+        }
+    }
+
     startGame() {
+        this.requestFullscreen();
         this.sfx.init();
         this.state = 'playing';
         this.startScreen.classList.add('hidden');
         this.hud.classList.add('visible');
         this.gameoverScreen.classList.add('hidden');
         this.quizScreen.classList.add('hidden');
+        document.getElementById('mobile-controls').style.display = '';
         
         // Attempt to lock orientation to landscape (mobile only)
         try {
@@ -1045,10 +1060,12 @@ class Game {
     }
 
     restart() {
+        this.requestFullscreen();
         this.state = 'playing';
         this.gameoverScreen.classList.add('hidden');
         this.quizScreen.classList.add('hidden');
         this.hud.classList.add('visible');
+        document.getElementById('mobile-controls').style.display = '';
         this.reset();
     }
 
@@ -1110,7 +1127,8 @@ class Game {
     }
     
     showVictoryModal() {
-        this.state = 'gameover'; // Stop game
+        this.state = 'gameover';
+        document.getElementById('mobile-controls').style.display = 'none'; // Hide buttons
         const modal = document.getElementById('victory-screen');
         modal.classList.remove('hidden');
         
@@ -1178,6 +1196,7 @@ class Game {
 
     finalGameOver() {
         this.state = 'gameover';
+        document.getElementById('mobile-controls').style.display = 'none';
 
         // Update high score
         if (this.score > this.highScore) {
@@ -1199,6 +1218,7 @@ class Game {
     }
 
     showQuiz() {
+        document.getElementById('mobile-controls').style.display = 'none';
         // Pick a random unused question
         const available = TRIVIA.map((q, i) => ({ q, i })).filter(x => !this.usedQuestions.includes(x.i));
         const pick = available[Math.floor(Math.random() * available.length)];
@@ -1299,6 +1319,7 @@ class Game {
     revivePlayer() {
         this.quizScreen.classList.add('hidden');
         this.state = 'playing';
+        document.getElementById('mobile-controls').style.display = '';
 
         // Reset player to safe position on ground
         this.player.y = CFG.GROUND_Y - CFG.PLAYER_H;
