@@ -596,7 +596,7 @@ body {
 /* ---- Inventory HUD ---- */
 .hud-inventory {
     position: absolute;
-    top: 20px;
+    top: 75px; /* Moved down to avoid overlapping stats */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -789,13 +789,13 @@ body {
     -webkit-backdrop-filter: blur(8px);
     color: #fff;
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
-    padding: 15px 25px;
+    padding: 10px 16px;
     border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     user-select: none;
     -webkit-user-select: none;
     transition: background 0.1s;
@@ -807,7 +807,7 @@ body {
 }
 
 .mobile-btn span {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .mobile-only { display: none; }
