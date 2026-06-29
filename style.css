@@ -43,8 +43,7 @@ body {
 /* Game Container */
 #game-wrapper {
     position: relative;
-    width: 900px;
-    max-width: 96vw;
+    width: min(900px, 96vw, calc(96vh * (900 / 500)));
     aspect-ratio: 900 / 500;
     border-radius: 16px;
     overflow: hidden;
@@ -857,8 +856,8 @@ body {
     margin-bottom: 15px;
 }
 
-/* Media Queries for Mobile */
-@media (max-width: 768px) {
+/* Media Queries for Mobile/Touch Devices */
+@media (max-width: 950px), (pointer: coarse) {
     .mobile-controls {
         display: flex; /* Show controls on mobile */
     }
@@ -870,7 +869,7 @@ body {
 }
 
 /* If the device is mobile AND in portrait mode, force landscape prompt */
-@media screen and (max-width: 768px) and (orientation: portrait) {
+@media screen and (max-width: 600px) and (orientation: portrait) {
     #landscape-prompt {
         display: flex;
     }
